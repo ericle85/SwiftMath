@@ -454,11 +454,13 @@ public class MTRadicalDisplay : MTDisplay {
         get { super.textColor }
     }
     
+    public var radicalGlyph:MTDisplay? { _radicalGlyph }
+    public var radicalShift:CGFloat { _radicalShift }
     private var _radicalGlyph:MTDisplay?
     private var _radicalShift:CGFloat=0
-    
-    var topKern:CGFloat=0
-    var lineThickness:CGFloat=0
+
+    public var topKern:CGFloat=0
+    public var lineThickness:CGFloat=0
     
     init(withRadicand radicand:MTMathListDisplay?, glyph:MTDisplay, position:CGPoint, range:NSRange) {
         super.init()

@@ -66,6 +66,22 @@ public func extractGlyphRects(from display: MTDisplay, offset: CGPoint = .zero) 
 
     case let radical as MTRadicalDisplay:
         var rects = [GlyphRect]()
+        // Extract the radical sign glyph (√)
+        if let radGlyph = radical.radicalGlyph {
+            let radOffset = CGPoint(x: pos.x + radical.radicalShift, y: pos.y)
+            rects.append(contentsOf: extractGlyphRects(from: radGlyph, offset: radOffset))
+        }
+        // Extract the vinculum (overline bar) as a rect
+        if radical.lineThickness > 0, let radicand = radical.radicand {
+            let lineY = pos.y + radical.ascent - radical.topKern - radical.lineThickness / 2
+            let lineRect = CGRect(
+                x: pos.x + radical.radicalShift + (radical.radicalGlyph?.width ?? 0),
+                y: lineY,
+                width: radicand.width,
+                height: radical.lineThickness
+            )
+            rects.append(GlyphRect(character: "‾", rect: lineRect))
+        }
         if let radicand = radical.radicand {
             rects.append(contentsOf: extractGlyphRects(from: radicand, offset: .zero))
         }
